@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "247785230003",
+    "project_id": "sigarete-counter",
+    "storage_bucket": "sigarete-counter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:247785230003:android:ed52ca5db069b31c1f2ac6",
+        "android_client_info": {
+          "package_name": "com.example.cigarette_counter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "247785230003-6l0266r266l1u10g6i01qhvqcj7sqv44.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBJqiRAKlWdnseS6k7rdhp7rLdNmUPOL0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "247785230003-6l0266r266l1u10g6i01qhvqcj7sqv44.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

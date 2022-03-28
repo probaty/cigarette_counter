@@ -1,4 +1,4 @@
-import 'package:cigarette_counter/data/firestore_api.dart';
+import 'package:cigarette_counter/data/firestore_repository.dart';
 import 'package:cigarette_counter/domain/cubit/storage_cubit.dart';
 import 'package:cigarette_counter/presentation/screens/main_screen.dart';
 import 'package:flutter/material.dart';
@@ -20,12 +20,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final api = FirestoreApi();
+  final api = FirestoreRepository();
   Stream<DocumentSnapshot>? stream;
 
   @override
   void initState() {
-    stream = api.stream('2020-05-02');
+    stream = api.getItemById('2020-05-02');
     super.initState();
   }
 

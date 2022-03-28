@@ -2,7 +2,6 @@ import 'package:cigarette_counter/data/firestore_api.dart';
 import 'package:cigarette_counter/domain/cubit/storage_cubit.dart';
 import 'package:cigarette_counter/presentation/screens/main_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,14 +9,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp(
-    connectivity: Connectivity(),
-  ));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
-  final Connectivity connectivity;
-  const MyApp({required this.connectivity, Key? key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();

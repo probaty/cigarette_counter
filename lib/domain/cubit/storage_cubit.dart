@@ -14,8 +14,12 @@ class StorageCubit extends Cubit<StorageState> {
   String dateNow = DateFormat('y-MM-d').format(DateTime.now());
 
   StorageCubit() : super(StorageLoading()) {
-    print(dateNow);
     _init();
+    Stream.periodic(
+      const Duration(minutes: 5),
+    ).listen((event) {
+      _init();
+    });
     currentDayItemStreamSubscription =
         firestore.getItemById(formattedDateNow).listen((event) {
       final data = event.data() as Map<String, dynamic>;

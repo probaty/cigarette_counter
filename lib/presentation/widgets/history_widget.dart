@@ -51,29 +51,77 @@ class _HistoryWidgetState extends State<HistoryWidget> {
               Expanded(
                 child: SizedBox.expand(
                   child: Card(
-                    child: Text('Total cigarettes: ${total.toString()}'),
-                  ),
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Total cigarettes',
+                                style: Theme.of(context).textTheme.headline6,
+                              ),
+                              Text(
+                                total.toString(),
+                                style: Theme.of(context).textTheme.headline6,
+                              )
+                            ]),
+                      )
+                      // child: Text('Total cigarettes: ${total.toString()}'),
+                      ),
                 ),
+              ),
+              const SizedBox(
+                height: 15,
               ),
               Expanded(
                 child: SizedBox.expand(
                   child: Card(
-                    child: Text(
-                        'Total cigarettes: ${(total / dataList.length).ceil().toString()}'),
-                  ),
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Average cigarettes per day',
+                                style: Theme.of(context).textTheme.headline6,
+                              ),
+                              Text(
+                                (total / dataList.length).ceil().toString(),
+                                style: Theme.of(context).textTheme.headline6,
+                              )
+                            ]),
+                      )
+                      // child: Text('Total cigarettes: ${total.toString()}'),
+                      ),
+                  // child: Card(
+                  //   child: Text(
+                  //       'Total cigarettes: ${(total / dataList.length).ceil().toString()}'),
+                  // ),
                 ),
+              ),
+              const SizedBox(
+                height: 15,
               ),
               Expanded(
                 flex: 10,
-                child: ListView(
-                  children: dataList.map((DocumentSnapshot document) {
+                child: ListView.separated(
+                  itemCount: dataList.length,
+                  separatorBuilder: (context, index) {
+                    return const Divider();
+                  },
+                  itemBuilder: (context, index) {
                     Map<String, dynamic> data =
-                        document.data()! as Map<String, dynamic>;
+                        dataList[index].data()! as Map<String, dynamic>;
                     return ListTile(
                       title: Text(data['date']),
-                      subtitle: Text(data['count'].toString()),
+                      trailing: Text(data['count'].toString()),
+                      // subtitle: Text(data['count'].toString()),
                     );
-                  }).toList(),
+                  },
                 ),
               ),
             ],

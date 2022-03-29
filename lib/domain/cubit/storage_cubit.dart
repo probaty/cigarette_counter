@@ -9,12 +9,13 @@ part 'storage_state.dart';
 
 class StorageCubit extends Cubit<StorageState> {
   final firestore = FirestoreRepository();
-  StreamSubscription? streamValues;
+  StreamSubscription? currentDayItemStreamSubscription;
   String dateNow = DateFormat.yMMMEd().format(DateTime.now());
 
   StorageCubit() : super(StorageLoading()) {
     _init(dateNow);
-    streamValues = firestore.getItemById(dateNow).listen((event) {
+    currentDayItemStreamSubscription =
+        firestore.getItemById(dateNow).listen((event) {
       final data = event.data() as Map<String, dynamic>;
       emit(StorageValue(counterValue: data['count'], date: data['date']));
     }, onError: (error) {
@@ -42,5 +43,11 @@ class StorageCubit extends Cubit<StorageState> {
     if (!exist) {
       await firestore.setItemCountById(dateNow, 0);
     }
+  }
+
+  @override
+  Future<void> close() {
+    currentDayItemStreamSubscription?.cancel();
+    return super.close();
   }
 }

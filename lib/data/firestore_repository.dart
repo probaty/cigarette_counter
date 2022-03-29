@@ -8,7 +8,10 @@ class FirestoreRepository {
     return counterCollection.doc(docId).snapshots();
   }
 
-  Stream<QuerySnapshot> getAllItems() {
+  Stream<QuerySnapshot> getAllItemsOrderBy({String? orderBy}) {
+    if (orderBy != null) {
+      return counterCollection.orderBy(orderBy, descending: true).snapshots();
+    }
     return counterCollection.snapshots();
   }
 
@@ -22,5 +25,11 @@ class FirestoreRepository {
 
   Future<void> setItemCountById(String docId, int count) {
     return counterCollection.doc(docId).set({'date': docId, 'count': count});
+  }
+
+  Future<void> setInitItem(String docId, int count, DateTime dateTime) {
+    return counterCollection
+        .doc(docId)
+        .set({'date': docId, 'count': count, 'dateTime': dateTime});
   }
 }

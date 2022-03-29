@@ -15,7 +15,7 @@ class _HistoryWidgetState extends State<HistoryWidget> {
 
   @override
   void initState() {
-    allItemsStream = firestore.getAllItems();
+    allItemsStream = firestore.getAllItemsOrderBy(orderBy: 'dateTime');
     super.initState();
   }
 

@@ -10,12 +10,14 @@ part 'storage_state.dart';
 class StorageCubit extends Cubit<StorageState> {
   final firestore = FirestoreRepository();
   StreamSubscription? currentDayItemStreamSubscription;
-  String dateNow = DateFormat.yMMMEd().format(DateTime.now());
+  String formattedDateNow = DateFormat.yMMMEd().format(DateTime.now());
+  String dateNow = DateFormat('y-MM-d').format(DateTime.now());
 
   StorageCubit() : super(StorageLoading()) {
-    _init(dateNow);
+    print(dateNow);
+    _init();
     currentDayItemStreamSubscription =
-        firestore.getItemById(dateNow).listen((event) {
+        firestore.getItemById(formattedDateNow).listen((event) {
       final data = event.data() as Map<String, dynamic>;
       emit(StorageValue(counterValue: data['count'], date: data['date']));
     }, onError: (error) {
@@ -26,7 +28,7 @@ class StorageCubit extends Cubit<StorageState> {
   void increment() {
     if (state is StorageValue) {
       final st = state as StorageValue;
-      firestore.setItemCountById(dateNow, st.counterValue + 1);
+      firestore.setItemCountById(formattedDateNow, st.counterValue + 1);
     }
   }
 
@@ -34,14 +36,14 @@ class StorageCubit extends Cubit<StorageState> {
     if (state is StorageValue) {
       final st = state as StorageValue;
       if (st.counterValue == 0) return;
-      firestore.setItemCountById(dateNow, st.counterValue - 1);
+      firestore.setItemCountById(formattedDateNow, st.counterValue - 1);
     }
   }
 
-  Future<void> _init(String dateNow) async {
-    final exist = await firestore.checkExisting(dateNow);
+  Future<void> _init() async {
+    final exist = await firestore.checkExisting(formattedDateNow);
     if (!exist) {
-      await firestore.setItemCountById(dateNow, 0);
+      await firestore.setInitItem(formattedDateNow, 0, DateTime.parse(dateNow));
     }
   }
 

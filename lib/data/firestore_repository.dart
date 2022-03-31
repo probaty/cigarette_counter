@@ -24,7 +24,7 @@ class FirestoreRepository {
   }
 
   Future<void> setItemCountById(String docId, int count) {
-    return counterCollection.doc(docId).set({'date': docId, 'count': count});
+    return counterCollection.doc(docId).update({'count': count});
   }
 
   Future<void> setInitItem(String docId, int count, DateTime dateTime) {

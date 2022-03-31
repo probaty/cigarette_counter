@@ -10,22 +10,21 @@ part 'storage_state.dart';
 class StorageCubit extends Cubit<StorageState> {
   final firestore = FirestoreRepository();
   StreamSubscription? currentDayItemStreamSubscription;
-  String formattedDateNow = DateFormat.yMMMEd().format(DateTime.now());
+  String formattedDateNow = DateFormat.yMMMMd().format(DateTime.now());
   String dateNow = DateFormat('y-MM-d').format(DateTime.now());
 
   StorageCubit() : super(StorageLoading()) {
     _init();
+    updateStream();
     Stream.periodic(
-      const Duration(minutes: 5),
+      const Duration(minutes: 3),
     ).listen((event) {
+      final now = DateFormat.yMMMMd().format(DateTime.now());
+      if (now != formattedDateNow) {
+        formattedDateNow = now;
+        updateStream();
+      }
       _init();
-    });
-    currentDayItemStreamSubscription =
-        firestore.getItemById(formattedDateNow).listen((event) {
-      final data = event.data() as Map<String, dynamic>;
-      emit(StorageValue(counterValue: data['count'], date: data['date']));
-    }, onError: (error) {
-      return emit(StorageError());
     });
   }
 
@@ -34,6 +33,20 @@ class StorageCubit extends Cubit<StorageState> {
       final st = state as StorageValue;
       firestore.setItemCountById(formattedDateNow, st.counterValue + 1);
     }
+  }
+
+  StreamSubscription createStream() {
+    return firestore.getItemById(formattedDateNow).listen((event) {
+      final data = event.data() as Map<String, dynamic>;
+      emit(StorageValue(counterValue: data['count'], date: data['date']));
+    }, onError: (error) {
+      return emit(StorageError());
+    });
+  }
+
+  void updateStream() {
+    currentDayItemStreamSubscription?.cancel();
+    currentDayItemStreamSubscription = createStream();
   }
 
   void decrement() {

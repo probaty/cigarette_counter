@@ -21,7 +21,7 @@ class CounterWidget extends StatelessWidget {
         RawMaterialButton(
           shape: CircleBorder(
             side: BorderSide(
-                color: Theme.of(context).primaryColor.withAlpha(100), width: 4),
+                color: Theme.of(context).primaryColor.withAlpha(150), width: 4),
           ),
           padding: const EdgeInsets.all(50),
           onPressed: () {
@@ -44,9 +44,13 @@ class CounterWidget extends StatelessWidget {
                       ?.copyWith(fontSize: 80),
                 ),
               ),
-              const Icon(
+              Icon(
                 Icons.add,
-                color: Colors.black54,
+                color: Theme.of(context)
+                    .textTheme
+                    .headline5
+                    ?.color
+                    ?.withOpacity(0.7),
                 size: 40,
               )
             ],
@@ -58,9 +62,13 @@ class CounterWidget extends StatelessWidget {
             onPressed: () {
               BlocProvider.of<StorageCubit>(context).decrement();
             },
-            child: const Icon(
+            child: Icon(
               Icons.remove,
-              color: Colors.black54,
+              color: Theme.of(context)
+                  .textTheme
+                  .headline5
+                  ?.color
+                  ?.withOpacity(0.7),
               size: 40,
             ))
       ],

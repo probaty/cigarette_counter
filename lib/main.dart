@@ -1,9 +1,7 @@
-import 'package:cigarette_counter/data/firestore_repository.dart';
 import 'package:cigarette_counter/domain/cubit/storage_cubit.dart';
 import 'package:cigarette_counter/presentation/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future<void> main() async {
@@ -20,12 +18,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final api = FirestoreRepository();
-  Stream<DocumentSnapshot>? stream;
-
   @override
   void initState() {
-    stream = api.getItemById('2020-05-02');
     super.initState();
   }
 
@@ -35,6 +29,12 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: Colors.blue,
+        androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
       ),
       home: BlocProvider<StorageCubit>(
         create: (context) => StorageCubit(),
@@ -43,41 +43,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-// Scaffold(
-//           body: Column(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         crossAxisAlignment: CrossAxisAlignment.center,
-//         children: [
-//           StreamBuilder<DocumentSnapshot>(
-//             builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-//               if (snapshot.hasError) {
-//                 return const Text('error');
-//               }
-
-//               if (snapshot.connectionState == ConnectionState.waiting) {
-//                 return const Text('loading');
-//               }
-
-//               final data = snapshot.data!.data() as Map<String, dynamic>;
-//               return Column(
-//                 children: [
-//                   ElevatedButton(
-//                     onPressed: () {
-//                       api.set(data['date'], data['count'] + 1);
-//                     },
-//                     child: const Text('add'),
-//                   ),
-//                   Text("${data['date']}   ${data['count'].toString()}"),
-//                   ElevatedButton(
-//                     onPressed: () {
-//                       api.set(data['date'], data['count'] - 1);
-//                     },
-//                     child: const Text('dis'),
-//                   ),
-//                 ],
-//               );
-//             },
-//             stream: stream,
-//           ),
-//         ],
-//       )),

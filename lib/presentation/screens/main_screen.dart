@@ -15,8 +15,11 @@ class MainScreen extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Cigarette counter'),
           centerTitle: true,
-          bottom: const TabBar(
-            tabs: [
+          bottom: TabBar(
+            indicatorColor: Theme.of(context).brightness == Brightness.dark
+                ? Colors.blue.withAlpha(150)
+                : Colors.white,
+            tabs: const [
               Tab(
                 child: Text(
                   'Overview',

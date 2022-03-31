@@ -22,6 +22,7 @@ class StorageCubit extends Cubit<StorageState> {
       final now = DateFormat.yMMMMd().format(DateTime.now());
       if (now != formattedDateNow) {
         formattedDateNow = now;
+        dateNow = DateFormat('y-MM-d').format(DateTime.now());
         updateStream();
       }
       _init();

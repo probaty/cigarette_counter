@@ -11,18 +11,17 @@ class StorageCubit extends Cubit<StorageState> {
   final firestore = FirestoreRepository();
   StreamSubscription? currentDayItemStreamSubscription;
   String formattedDateNow = DateFormat.yMMMMd().format(DateTime.now());
-  String dateNow = DateFormat('y-MM-d').format(DateTime.now());
+  String dateNow = DateFormat('y-MM-dd').format(DateTime.now());
 
   StorageCubit() : super(StorageLoading()) {
     _init();
-    updateStream();
     Stream.periodic(
       const Duration(minutes: 3),
     ).listen((event) {
       final now = DateFormat.yMMMMd().format(DateTime.now());
       if (now != formattedDateNow) {
         formattedDateNow = now;
-        dateNow = DateFormat('y-MM-d').format(DateTime.now());
+        dateNow = DateFormat('y-MM-dd').format(DateTime.now());
         updateStream();
       }
       _init();
@@ -62,6 +61,7 @@ class StorageCubit extends Cubit<StorageState> {
     final exist = await firestore.checkExisting(formattedDateNow);
     if (!exist) {
       await firestore.setInitItem(formattedDateNow, 0, DateTime.parse(dateNow));
+      updateStream();
     }
   }
 

@@ -15,6 +15,7 @@ class StorageCubit extends Cubit<StorageState> {
 
   StorageCubit() : super(StorageLoading()) {
     _init();
+    updateStream();
     Stream.periodic(
       const Duration(minutes: 3),
     ).listen((event) {
@@ -61,7 +62,6 @@ class StorageCubit extends Cubit<StorageState> {
     final exist = await firestore.checkExisting(formattedDateNow);
     if (!exist) {
       await firestore.setInitItem(formattedDateNow, 0, DateTime.parse(dateNow));
-      updateStream();
     }
   }
 
